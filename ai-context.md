@@ -1,6 +1,6 @@
 🤖 AI Assistant Project Context
 
-This file provides context for an AI assistant (like Gemini Code Assist) to understand the project structure, goals, and conventions.
+This file provides context for an AI assistant to understand the project structure, goals, and conventions.
 
 1. 🚀 Project Overview
 
@@ -10,9 +10,9 @@ Core Features: User Registration, Complaint Submission, Complaint Management (by
 
 2. 💻 Technology Stack
 
-Backend: Laravel
+Backend: Laravel 12.35.1
 
-Frontend: React (in a separate repository/folder)
+Frontend: React 19.2.0 (in a separate repository/folder)
 
 Database: PostgreSQL
 
