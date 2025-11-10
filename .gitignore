@@ -1,30 +1,67 @@
-/vendor/
-node_modules/
-npm-debug.log
-yarn-error.log
+# -----------------------------------------------------------------
+# !! IMPORTANT !!
+#
+# Find and replace 'YOUR_LARAVEL_FOLDER' and 'YOUR_REACT_FOLDER'
+# with the actual names of your sub-folders.
+#
+# Example:
+# If your Laravel project is in a folder named 'api',
+# change '/YOUR_LARAVEL_FOLDER/vendor/' to '/api/vendor/'
+#
+# If your React project is in a folder named 'client',
+# change '/YOUR_REACT_FOLDER/node_modules/' to '/client/node_modules/'
+#
+# -----------------------------------------------------------------
 
-# Laravel 4 specific
-bootstrap/compiled.php
-app/storage/
 
-# Laravel 5 & Lumen specific
-public/storage
-public/hot
+# === Laravel Project (in /backend) ===
+#
+# Ignored files and directories from the standard Laravel .gitignore
+#
+/backend/node_modules/
+/backend/public/storage
+/backend/storage/app/public
+/backend/storage/framework/
+/backend/storage/logs/
+/backend/vendor/
+/backend/.env
+/backend/.env.backup
+/backend/.phpunit.result.cache
+/backend/Homestead.json
+/backend/Homestead.yaml
+/backend/npm-debug.log
+/backend/yarn-error.log
+/backend/composer.phar
 
-# Laravel 5 & Lumen specific with changed public path
-public_html/storage
-public_html/hot
 
-storage/*.key
-.env
-Homestead.yaml
-Homestead.json
-/.vagrant
-.phpunit.result.cache
+# === React Project (in /frontend) ===
+#
+# Ignored files and directories from the standard Node/React .gitignore
+#
+/frontend/node_modules/
+/frontend/build/
+/frontend/coverage/
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+/frontend/.env
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
 
-/public/build
-/storage/pail
-.env.backup
-.env.production
-.phpactor.json
-auth.json
+
+# === General OS & IDE Ignores ===
+#
+# These are good to have in any project
+#
+.DS_Store
+.Trash*
+Thumbs.db
+desktop.ini
+
+# IDE - VSCode
+.vscode/
+
+# IDE - JetBrains (PhpStorm, WebStorm)
+.idea/
