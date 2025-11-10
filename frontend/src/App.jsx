@@ -16,6 +16,7 @@ import RegisterPage from './RegisterPage';
 import LoginPage from "./LoginPage";
 
 import Footer from "./Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
@@ -27,11 +28,25 @@ const App = () => {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/bulletin" element={<UserBulletin />} />
-          <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/file-report" element={<ComplaintForm />} />
-          <Route path="/check-complaints" element={<ComplaintsHistory />} />
+          
+          {/* Protected Routes */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <UserDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/file-report" element={
+            <ProtectedRoute>
+              <ComplaintForm />
+            </ProtectedRoute>
+          } />
+          <Route path="/check-complaints" element={
+            <ProtectedRoute>
+              <ComplaintsHistory />
+            </ProtectedRoute>
+          } />
         </Routes>
       </div>
       <Footer />

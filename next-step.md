@@ -1,0 +1,10 @@
+## Next Steps
+
+1. **Protected Routes** - You may want to create a ProtectedRoute component to guard routes that require authentication
+2. **User Dashboard** - Update the UserDashboard to display user information from the auth context
+3. **Logout Functionality** - Add logout buttons in your Navbar or user menu
+4. **Password Reset** - Implement forgot password functionality
+5. **Admin Panel** - Create admin-only routes and components
+
+To begin, I want you to update the factory and seeders to reflect the changes in the migration and model of this project as well as other related files. Additionally, I want you to update the auth controller to reflect the changes in the model and migration of this project as well as other related files. I also want you to do the next steps you have written at the end of the setup instructions.
+I want you to add a login link to the navbar for new visitors and a logout link for authenticated users. I want you to create a link that displays the user's name if they are authenticated and a login link if they are not. After the user registers or logs in, it should redirect to the dashboard. One more thing, when the user goes to the dashboard and they aren't registered or haven't logged in, it should redirect them to the login page. When the user logs out, it should redirect them to the login page. In the dashboard, there are buttons to go to the filing of complaint and the complaints history. I want you to implement the functionality for the filing of complaint and the complaints history. When the user clicks on the filing of complaint, it should redirect them to the complaint form. When the user clicks on the complaints history, it should redirect them to the complaints history page. The user should be able to file a complaint and see their complaints history. 

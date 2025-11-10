@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             'first_name' => 'Admin',
             'last_name' => 'User',
             'email' => 'admin@example.com',
+            'address' => '123 Admin Street, Admin City',
             'password' => 'password', // Model's 'hashed' cast will hash this
             'role' => 'admin',
             'email_verified_at' => now(),
@@ -28,6 +29,7 @@ class UserSeeder extends Seeder
             'first_name' => 'Test',
             'last_name' => 'User',
             'email' => 'user@example.com',
+            'address' => '456 Test Avenue, Test Town',
             'password' => 'password',
             'role' => 'user',
             'email_verified_at' => now(),

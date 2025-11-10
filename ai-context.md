@@ -32,6 +32,8 @@ last_name (string)
 
 email (string, unique)
 
+address (text)
+
 password (string, hashed)
 
 role (string, default: 'user'. Can also be 'admin')
