@@ -109,12 +109,15 @@ const ComplaintsHistory = () => {
                   onClick={() => setSelectedComplaint(item)}
                   style={{ cursor: 'pointer', padding: '10px' }}
                 >
-                  <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{item.subject}</div>
-                  <div style={{ fontSize: '12px', color: '#666' }}>{item.type}</div>
-                  <div style={{ fontSize: '11px', marginTop: '5px' }}>
-                    <span style={{ color: getStatusColor(item.status), fontWeight: 'bold' }}>
-                      {item.status.toUpperCase()}
-                    </span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginRight: '10px' }}>
+                      {item.subject}
+                    </div>
+                    <div style={{ fontSize: '11px', flexShrink: 0 }}>
+                      <span style={{ color: getStatusColor(item.status), fontWeight: 'bold' }}>
+                        {item.status.toUpperCase()}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))
