@@ -16,6 +16,7 @@ const RegisterPage = () => {
     email: '',
     address: '',
     password: '',
+    password_confirmation: '',
     terms: false,
   });
   
@@ -53,6 +54,7 @@ const RegisterPage = () => {
       email: formData.email,
       address: formData.address,
       password: formData.password,
+      password_confirmation: formData.password_confirmation,
     });
     
     setLoading(false);
@@ -161,6 +163,22 @@ const RegisterPage = () => {
                 className="input-field" 
               />
               {fieldErrors.password && <span className="field-error" style={{color: 'red', fontSize: '12px'}}>{fieldErrors.password[0]}</span>}
+            </div>
+
+            {/* Confirm Password Input Field */}
+            <div className="input-group">
+              <label htmlFor="password_confirmation" className="input-label">Confirm Password</label>
+              <input 
+                type="password" 
+                id="password_confirmation" 
+                name="password_confirmation"
+                value={formData.password_confirmation}
+                onChange={handleChange}
+                placeholder="*********" 
+                required 
+                className="input-field" 
+              />
+              {fieldErrors.password_confirmation && <span className="field-error" style={{color: 'red', fontSize: '12px'}}>{fieldErrors.password_confirmation[0]}</span>}
             </div>
 
             {/* Terms & Policy Checkbox */}

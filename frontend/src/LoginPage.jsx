@@ -35,6 +35,7 @@ const LoginPage = () => {
     const result = await login({
       email: formData.email,
       password: formData.password,
+      remember: formData.remember,
     });
     
     setLoading(false);
@@ -108,7 +109,6 @@ const LoginPage = () => {
                 />
                 Remember Me
               </label>
-              <a href="#" className="forgot-password">Forgot Password?</a>
             </div>
             
             {/* Log In Button */}

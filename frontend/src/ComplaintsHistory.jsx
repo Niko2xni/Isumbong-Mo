@@ -27,10 +27,11 @@ const ComplaintsHistory = () => {
           setSelectedComplaint(result.complaints[0]);
         }
       } else {
-        setError(result.message || 'Failed to fetch complaints');
+        setError(result.message || 'Failed to fetch complaints. Please try again later.');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to fetch complaints');
+      const message = err.response?.data?.message || 'An error occurred while fetching complaints.';
+      setError(message);
     } finally {
       setLoading(false);
     }

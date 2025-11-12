@@ -11,8 +11,8 @@ export const AuthProvider = ({ children }) => {
   // Check if user is logged in on mount
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('auth_token');
-      const savedUser = localStorage.getItem('user');
+      const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
+      const savedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
       
       if (token && savedUser) {
         try {
@@ -22,6 +22,8 @@ export const AuthProvider = ({ children }) => {
           console.error('Error parsing saved user:', error);
           localStorage.removeItem('auth_token');
           localStorage.removeItem('user');
+          sessionStorage.removeItem('auth_token');
+          sessionStorage.removeItem('user');
         }
       }
       setLoading(false);
@@ -34,8 +36,13 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = await authAPI.login(credentials);
       if (data.success) {
-        localStorage.setItem('auth_token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        if (credentials.remember) {
+          localStorage.setItem('auth_token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+        } else {
+          sessionStorage.setItem('auth_token', data.token);
+          sessionStorage.setItem('user', JSON.stringify(data.user));
+        }
         setUser(data.user);
         setIsAuthenticated(true);
         return { success: true, user: data.user };
@@ -73,6 +80,8 @@ export const AuthProvider = ({ children }) => {
     } finally {
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user');
+      sessionStorage.removeItem('auth_token');
+      sessionStorage.removeItem('user');
       setUser(null);
       setIsAuthenticated(false);
     }

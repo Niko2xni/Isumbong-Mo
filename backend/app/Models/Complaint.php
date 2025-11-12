@@ -11,9 +11,11 @@ class Complaint extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'subject',
         'description',
         'type',
+        'status',
     ];
 
     public function user(): BelongsTo

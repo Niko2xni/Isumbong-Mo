@@ -41,18 +41,22 @@ const ComplaintForm = () => {
         alert('Complaint submitted successfully!');
         navigate('/check-complaints');
       } else {
+        // This case might be for non-validation errors from the API
         if (result.errors) {
           setFieldErrors(result.errors);
         }
-        setError(result.message || 'Failed to submit complaint');
+        setError(result.message || 'Failed to submit complaint. Please check the form for errors.');
       }
     } catch (err) {
-      const errors = err.response?.data?.errors;
-      const message = err.response?.data?.message || 'Failed to submit complaint';
-      if (errors) {
-        setFieldErrors(errors);
+      const responseData = err.response?.data;
+      const message = responseData?.message || 'An unexpected error occurred. Please try again.';
+      
+      if (responseData?.errors) {
+        setFieldErrors(responseData.errors);
+        setError('Please correct the errors below.');
+      } else {
+        setError(message);
       }
-      setError(message);
     } finally {
       setLoading(false);
     }
