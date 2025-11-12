@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { authAPI } from '../services/api';
+import api, { authAPI } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
       
       if (token && savedUser) {
         try {
+          api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           setUser(JSON.parse(savedUser));
           setIsAuthenticated(true);
         } catch (error) {
@@ -43,6 +44,7 @@ export const AuthProvider = ({ children }) => {
           sessionStorage.setItem('auth_token', data.token);
           sessionStorage.setItem('user', JSON.stringify(data.user));
         }
+        api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
         setUser(data.user);
         setIsAuthenticated(true);
         return { success: true, user: data.user };
@@ -60,6 +62,7 @@ export const AuthProvider = ({ children }) => {
       if (data.success) {
         localStorage.setItem('auth_token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
+        api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
         setUser(data.user);
         setIsAuthenticated(true);
         return { success: true, user: data.user };
@@ -76,12 +79,18 @@ export const AuthProvider = ({ children }) => {
     try {
       await authAPI.logout();
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error('Logout failed', error);
     } finally {
+      // Clear token from storage
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user');
       sessionStorage.removeItem('auth_token');
       sessionStorage.removeItem('user');
+
+      // Clear the authorization header from the axios instance
+      delete api.defaults.headers.common['Authorization'];
+
+      // Reset state
       setUser(null);
       setIsAuthenticated(false);
     }
