@@ -35,7 +35,7 @@ api.interceptors.response.use(
         localStorage.removeItem('user');
         sessionStorage.removeItem('auth_token');
         sessionStorage.removeItem('user');
-        window.location.href = '/login';
+        window.location.href = '/';
       }
     }
     return Promise.reject(error);
@@ -67,8 +67,8 @@ export const authAPI = {
 
 // Complaint API calls
 export const complaintAPI = {
-  getAll: async () => {
-    const response = await api.get('/complaints');
+  getAll: async (page = 1) => {
+    const response = await api.get(`/complaints?page=${page}`);
     return response.data;
   },
   

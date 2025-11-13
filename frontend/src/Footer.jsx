@@ -7,7 +7,7 @@ import logoImage from './assets/loginlg.png';
 const Footer = () => {
     // Define the navigation links
     const navLinks = [
-        { name: 'Home', href: '#' },
+        { name: 'Home', href: '/' },
         { name: 'Bulletin', href: '/bulletin' },
         { name: 'About', href: '/about' },
         { name: 'Dashboard', href: '/dashboard' },

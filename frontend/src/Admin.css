@@ -285,6 +285,21 @@
   background-color: #dddddd;
 }
 
+.complaint-item-subject {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.complaint-item-id {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0;
+}
+
 .list-item-active {
   background-color: #3d74b6 !important;
 }
@@ -446,4 +461,30 @@
 
 .arrow-down {
   font-size: 10px;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.pagination-controls button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.pagination-controls button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination-controls span {
+  margin: 0 10px;
 }

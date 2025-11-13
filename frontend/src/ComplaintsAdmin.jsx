@@ -1,109 +1,185 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import { complaintAPI } from './services/api';
 import './admin.css';
 import { FaSearch } from 'react-icons/fa'; // For a Font Awesome search icon
 
 const ComplaintsAdmin = () => {
-  // Mock data for the Complaint List items (the clickable bars on the left)
-  const complaints = [
-    { id: 1, text: "Complaint #2024-001" },
-    { id: 2, text: "Complaint #2024-002" },
-    { id: 3, text: "Complaint #2024-003" },
-    { id: 4, text: "Complaint #2024-004" },
-    // ... add more as needed to fill the list space
-  ];
+  const navigate = useNavigate();
+  const [complaints, setComplaints] = useState([]);
+  const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [pagination, setPagination] = useState(null);
 
-  // Placeholder content for the Summary Detail pane
-  const complaintDetail = {
-    reference: "CMP-2024-001-A",
-    date: "2024/10/26",
-    status: "OPEN",
-    subject: "Noise Complaint near Building C",
-    text: "This area is for the detailed description of the complaint corresponding to the selected item in the list. The full text will be loaded here from the database.",
+  useEffect(() => {
+    const fetchComplaints = async (page = 1) => {
+      try {
+        setLoading(true);
+        const result = await complaintAPI.getAll(page);
+        if (result.success) {
+          setComplaints(result.complaints);
+          setPagination(result.pagination);
+          if (result.complaints.length > 0) {
+            setSelectedComplaint(result.complaints[0]);
+          }
+        } else {
+          setError(result.message || 'Failed to fetch complaints.');
+        }
+      } catch (err) {
+        const message = err.response?.data?.message || 'An error occurred.';
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchComplaints();
+  }, []);
+
+  const handlePageChange = (page) => {
+    fetchComplaints(page);
+  };
+
+  const filteredComplaints = complaints.filter(complaint =>
+    complaint.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (complaint.complaint_type && complaint.complaint_type.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    complaint.status.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'submitted':
+        return '#FFA500';
+      case 'in_progress':
+        return '#2196F3';
+      case 'resolved':
+        return '#4CAF50';
+      default:
+        return '#757575';
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
   };
 
   return (
     <div className="page-content-wrapper">
       <div className="sidebar-container">
-        {/* Go back link */}
-        <div className="go-back-history">
-          <span className="arrow-icon" role="img" aria-label="left arrow">
-            &larr;
-          </span>{" "}
-          Go back
+        <div className="go-back-history" onClick={() => navigate('/admin/dashboard')}>
+          <span className="arrow-icon" role="img" aria-label="left arrow">&larr;</span> Go back
         </div>
-
-        {/* Sidebar Content */}
         <div className="complaint-list-sidebar">
           <div className="sidebar-heading">Complaints List</div>
-          
-          {/* Search Bar */}
           <div className="list-search-container">
-            <div className="search-input-wrapper"> {/* The container for positioning */}
-                <input 
-                    type="text" 
-                    placeholder="Search..." 
-                    className="search-input-field"
-                />
-                <FaSearch className="search-icon-inside" />
-                    </div>
-                <button className="filter-btn">
-                    <span className="filter-icon">&#9776;</span>
-                </button>
+            <div className="search-input-wrapper">
+              <input
+                type="text"
+                placeholder="Search..."
+                className="search-input-field"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <FaSearch className="search-icon-inside" />
             </div>
-
-          {/* List Items (The repeating gray/blue bars) */}
-          <div className="list-items-container">
-            {complaints.map((item, index) => (
-              <div 
-                key={item.id} 
-                className={`list-item ${index === 0 ? 'list-item-active' : ''}`}
-              >
-                {/* Placeholder text or summary */}
-              </div>
-            ))}
-            {/* Adding empty items to fill the space as shown in the screenshot */}
-            {Array.from({ length: 10 - complaints.length > 0 ? 10 - complaints.length : 0 }).map((_, index) => (
-                <div key={`empty-${index}`} className="list-item list-item-empty"></div>
-            ))}
+            <button className="filter-btn">
+              <span className="filter-icon">&#9776;</span>
+            </button>
           </div>
+          <div className="list-items-container">
+            {loading ? (
+              <div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div>
+            ) : error ? (
+              <div style={{ padding: '20px', textAlign: 'center', color: 'red' }}>{error}</div>
+            ) : filteredComplaints.length === 0 ? (
+              <div style={{ padding: '20px', textAlign: 'center' }}>No complaints found</div>
+            ) : (
+              filteredComplaints.map((item) => (
+                <div
+                  key={item.id}
+                  className={`list-item ${selectedComplaint?.id === item.id ? 'list-item-active' : ''}`}
+                  onClick={() => setSelectedComplaint(item)}
+                  style={{ cursor: 'pointer', padding: '10px' }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                    <div style={{ fontWeight: 'bold', fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginRight: '10px' }}>
+                      {item.subject}
+                    </div>
+                    <div style={{ fontSize: '11px', flexShrink: 0 }}>
+                      <span style={{ color: getStatusColor(item.status), fontWeight: 'bold' }}>
+                        {item.status.toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          {pagination && (
+            <div className="pagination-controls">
+              <button onClick={() => handlePageChange(pagination.current_page - 1)} disabled={pagination.current_page === 1}>Previous</button>
+              <span>Page {pagination.current_page} of {pagination.last_page}</span>
+              <button onClick={() => handlePageChange(pagination.current_page + 1)} disabled={pagination.current_page === pagination.last_page}>Next</button>
+            </div>
+          )}
         </div>
       </div>
-
-      {/* Main Content Area */}
       <div className="summary-content-area">
         <div className="summary-header-bar">
           <h2 className="summary-title">COMPLAINTS SUMMARY</h2>
         </div>
-        
         <div className="complaint-detail-pane">
-          <div className="detail-row">
-            <span className="detail-ref-number">
-              <span className="data-field-red">[Reference Number]</span>
-            </span>
-            <span className="detail-date-status">
-              <span className="data-field-red">[Date]</span>
-              <span className="data-field-red">[STATUS]</span>
-            </span>
-          </div>
+          {selectedComplaint ? (
+            <>
+              <div className="detail-row">
+                <span className="detail-ref-number">
+                  <span className="data-field-red">CMP-{selectedComplaint.id.toString().padStart(6, '0')}</span>
+                </span>
+                <span className="detail-date-status">
+                  <span className="data-field-red">{formatDate(selectedComplaint.created_at)}</span>
+                  <span className="data-field-red" style={{ color: getStatusColor(selectedComplaint.status) }}>
+                    {selectedComplaint.status.toUpperCase()}
+                  </span>
+                </span>
+              </div>
 
-          <div className="detail-subject">
-            <span className="data-field">[Subject]</span>
-          </div>
+              <div className="detail-subject">
+                <span className="data-field">{selectedComplaint.subject}</span>
+              </div>
 
-          <div className="detail-text-body">
-            Text....
-          </div>
-          <div className="detail-button-group">
-            <button className="action-button status-button">
-              Change Status
-            </button>
-            <button className="action-button remark-button">
-              Add Remark
-            </button>
-            <button className="action-button save-button">
-              Save
-            </button>
-          </div>
+              <div style={{ marginTop: '15px', marginBottom: '10px' }}>
+                <strong>Type:</strong> {selectedComplaint.complaint_type}
+              </div>
+
+              <div className="detail-text-body">
+                {selectedComplaint.description}
+              </div>
+
+              {selectedComplaint.remarks && (
+                <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '5px' }}>
+                  <strong>Admin Remarks:</strong>
+                  <p style={{ marginTop: '10px' }}>{selectedComplaint.remarks}</p>
+                  {selectedComplaint.admin && (
+                    <p style={{ marginTop: '5px', fontSize: '12px', color: '#666' }}>
+                      - {selectedComplaint.admin.first_name} {selectedComplaint.admin.last_name}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              <div style={{ marginTop: '20px', fontSize: '12px', color: '#888' }}>
+                <div>Created: {new Date(selectedComplaint.created_at).toLocaleString()}</div>
+                <div>Last Updated: {new Date(selectedComplaint.updated_at).toLocaleString()}</div>
+              </div>
+            </>
+          ) : (
+            <div style={{ padding: '20px', textAlign: 'center', color: '#888' }}>
+              Select a complaint to view details
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -15,30 +15,23 @@ class ComplaintController extends Controller
     {
         $user = $request->user();
         
-        $complaints = Complaint::where('user_id', $user->id)
-            ->with('admin')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Complaint::with('admin')->orderBy('created_at', 'desc');
+
+        if ($user->role !== 'admin') {
+            $query->where('user_id', $user->id);
+        }
+
+        $complaints = $query->paginate(15); // Paginate with 15 items per page
 
         return response()->json([
             'success' => true,
-            'complaints' => $complaints->map(function ($complaint) {
-                return [
-                    'id' => $complaint->id,
-                    'subject' => $complaint->subject,
-                    'description' => $complaint->description,
-                    'type' => $complaint->type,
-                    'status' => $complaint->status,
-                    'remarks' => $complaint->remarks,
-                    'admin' => $complaint->admin ? [
-                        'id' => $complaint->admin->id,
-                        'first_name' => $complaint->admin->first_name,
-                        'last_name' => $complaint->admin->last_name,
-                    ] : null,
-                    'created_at' => $complaint->created_at->format('Y-m-d H:i:s'),
-                    'updated_at' => $complaint->updated_at->format('Y-m-d H:i:s'),
-                ];
-            }),
+            'complaints' => $complaints->items(),
+            'pagination' => [
+                'current_page' => $complaints->currentPage(),
+                'last_page' => $complaints->lastPage(),
+                'per_page' => $complaints->perPage(),
+                'total' => $complaints->total(),
+            ]
         ], 200);
     }
 

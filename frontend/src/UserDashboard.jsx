@@ -33,6 +33,10 @@ const Home = () => {
     navigate("/check-complaints");
   };
 
+  //const handleViewDetails = (id) => {
+  //  navigate(`/complaint-details/${id}`);
+  //};
+
   return (
     <main className="main-content">
 
@@ -60,7 +64,12 @@ const Home = () => {
           recentComplaints.map(complaint => (
             <div key={complaint.id} className="complaint-box">
               <h4>{complaint.subject}</h4>
-              <p>{complaint.status}</p>
+              <p><strong>Type:</strong> {complaint.complaint_type}</p>
+              <p className="complaint-description">
+                {complaint.description.substring(0, 100)}...
+              </p>
+              <p><strong>Status:</strong> {complaint.status}</p>
+              {/*<button onClick={() => handleViewDetails(complaint.id)} className="view-details-btn">View Details</button>*/}
             </div>
           ))
         ) : (

@@ -10,7 +10,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate('/');
   };
 
   return (
@@ -38,7 +38,7 @@ const Navbar = () => {
               <FaUser />
               <span>{user?.first_name} {user?.last_name}</span>
             </Link>
-            <button onClick={handleLogout} className="nav-item" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', fontSize: 'inherit' }}>
+            <button onClick={handleLogout} className="nav-item" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
               Logout
             </button>
           </div>

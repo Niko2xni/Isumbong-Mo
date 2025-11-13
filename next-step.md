@@ -11,3 +11,25 @@ I want you to add a login link to the navbar for new visitors and a logout link 
 
 
 When I try to file a complaint, it throws this error "SQLSTATE[23502]: Not null violation: 7 ERROR: null value in column "user_id" of relation "complaints" violates not-null constraint DETAIL: Failing row contains (52, null, Test, asdasdadd, dsds, submitted, null, null, 2025-11-10 21:21:11, 2025-11-10 21:21:11). (Connection: pgsql, SQL: insert into "complaints" ("subject", "description", "type", "updated_at", "created_at") values (Test, asdasdadd, dsds, 2025-11-10 21:21:11, 2025-11-10 21:21:11) returning "id")". Also, when I check the complaints list, it only shows "No complaints found". I want you to fix these problems. Additionally, I want to you to improve the validation of registration and log in forms. I also want you to improve the error handling of the complaint form and the complaints history page. I want you to add another field for "Confirm Password" in the registration form. With that, I want you to update all the related files to reflect the changes in the registration form. I want you to add a loading state to the complaint form and the complaints history page. Also, if there is no functionality for the "Remember Me" in the login form, I want you to add it. I also want you to remove the "Forgot Password" link since we won't be using that yet.
+
+Ensure that the font size and font used for the Logout button is the same as the format used for the other navbar links.
+
+I want you to improve the recent complaints section in the dashboard. It should also display the type and a short brief description of the complaint while the rest of the description should be hidden by using, for example, dots.I also want you to add a functionality to the recent complaints section to view the complaint details.
+
+When logging out, it should not redirect them to the login page, it should redirect them to the home page.
+
+I want you to use and include the ComplaintsAdmin component and AdminBulletin component in the website. But they should not be accessible to the residents and normal users, it should only be accessible by admins through api links like /admin/complaints and /admin/bulletin. Additionally, before they can access the admin pages, the admin must first verify their identity by logging in. For the admin's login page, you can use the LoginPage component but change it to be more admin-like.
+
+When I logout as a user, it still redirects me to the login page. I want you to fix this problem. It should redirect to the landing page.
+
+I want you add a validation for the admin login form to only allow admins to log in. 
+
+I want you to create an admin dashboard and admin bulletin page. The admin dashboard displays the summary of total complaints, complaints in progress, resolved complaints, and dismissed complaints. It will also complain buttons for view complaints list, Add announcements (in the admin bulletin page). Additionally, after the admin logs in, it should redirect them to the admin dashboard.
+
+With all these changes, I want you to update the seeder and factory files to reflect the changes in the model and migration of this project as well as other related files. I also want you to update the seeder for users to only create 1 admin.
+
+In the users dashboard, I want you to improve the design of the recent complaints section. There are a lot of unused spaces in the tab or box of the 3 recent complaints records. I want you to improve the design of the recent complaints section to make it more compact and organized.
+
+I want you to add the necessary functionality to the admin complaint list page. It should display all of the complaints and allow the admin to view the details of each complaint. 
+
+No complaint is being displayed in the admin complaint list page. I want you to fix this problem. For context, it should display all the complaints of all the users. If you're having trouble with implementing this, you can look at the logic you made in the ComplaintsHistory component for users.
