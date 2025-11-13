@@ -1,11 +1,29 @@
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import ideaImage from "./assets/image 2.png";
 import history from "./assets/history.png";
 import { useNavigate } from "react-router-dom";
+import { complaintAPI } from "./services/api";
 
 const Home = () => {
-
   const navigate = useNavigate();
+  const [recentComplaints, setRecentComplaints] = useState([]);
+
+  useEffect(() => {
+    const fetchRecentComplaints = async () => {
+      try {
+        const result = await complaintAPI.getAll();
+        if (result.success) {
+          const sorted = result.complaints.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+          setRecentComplaints(sorted.slice(0, 3));
+        }
+      } catch (error) {
+        console.error("Failed to fetch recent complaints:", error);
+      }
+    };
+
+    fetchRecentComplaints();
+  }, []);
 
   const handleFileReport = () => {
     navigate("/file-report");
@@ -38,9 +56,16 @@ const Home = () => {
 
       <h3 className="section-title">Recent Complaints</h3>
       <div className="complaints-grid">
-        <div className="complaint-box" />
-        <div className="complaint-box" />
-        <div className="complaint-box" />
+        {recentComplaints.length > 0 ? (
+          recentComplaints.map(complaint => (
+            <div key={complaint.id} className="complaint-box">
+              <h4>{complaint.subject}</h4>
+              <p>{complaint.status}</p>
+            </div>
+          ))
+        ) : (
+          <p>No recent complaints to display.</p>
+        )}
       </div>
 
       <div className="complaint-card">
