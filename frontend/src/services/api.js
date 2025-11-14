@@ -93,4 +93,17 @@ export const complaintAPI = {
   },
 };
 
+// Announcement API calls
+export const announcementAPI = {
+  getAll: async () => {
+    const response = await api.get('/announcements');
+    return response.data;
+  },
+  
+  create: async (announcementData) => {
+    const response = await api.post('/announcements', announcementData);
+    return response.data;
+  },
+};
+
 export default api;

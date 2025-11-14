@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\AnnouncementController;
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -23,4 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/complaints/{id}', [ComplaintController::class, 'show']);
     Route::put('/complaints/{id}', [ComplaintController::class, 'update']);
     Route::delete('/complaints/{id}', [ComplaintController::class, 'destroy']);
+
+    // Announcement routes
+    Route::get('/announcements', [AnnouncementController::class, 'index']);
+    Route::post('/announcements', [AnnouncementController::class, 'store']);
 });
