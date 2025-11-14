@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/complaints/{id}', [ComplaintController::class, 'show']);
     Route::put('/complaints/{id}', [ComplaintController::class, 'update']);
     Route::delete('/complaints/{id}', [ComplaintController::class, 'destroy']);
+    Route::patch('/complaints/{id}/status', [ComplaintController::class, 'updateStatus']);
 
     // Announcement routes
     Route::get('/announcements', [AnnouncementController::class, 'index']);

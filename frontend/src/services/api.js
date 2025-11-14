@@ -91,6 +91,11 @@ export const complaintAPI = {
     const response = await api.delete(`/complaints/${id}`);
     return response.data;
   },
+
+  updateStatus: async (id, data) => {
+    const response = await api.patch(`/complaints/${id}/status`, data);
+    return response.data;
+  },
 };
 
 // Announcement API calls

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Modal from './Modal';
 import { useNavigate } from 'react-router-dom';
 import { complaintAPI } from './services/api';
 import './admin.css';
@@ -12,6 +13,8 @@ const ComplaintsAdmin = () => {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [pagination, setPagination] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [updateData, setUpdateData] = useState({ status: '', remarks: '' });
 
   useEffect(() => {
     const fetchComplaints = async (page = 1) => {
@@ -40,6 +43,24 @@ const ComplaintsAdmin = () => {
 
   const handlePageChange = (page) => {
     fetchComplaints(page);
+  };
+
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await complaintAPI.updateStatus(selectedComplaint.id, updateData);
+      if (result.success) {
+        const updatedComplaints = complaints.map(c => c.id === selectedComplaint.id ? result.complaint : c);
+        setComplaints(updatedComplaints);
+        setSelectedComplaint(result.complaint);
+        setIsModalOpen(false);
+      } else {
+        setError(result.message || 'Failed to update complaint.');
+      }
+    } catch (err) {
+      const message = err.response?.data?.message || 'An error occurred.';
+      setError(message);
+    }
   };
 
   const filteredComplaints = complaints.filter(complaint =>
@@ -174,6 +195,10 @@ const ComplaintsAdmin = () => {
                 <div>Created: {new Date(selectedComplaint.created_at).toLocaleString()}</div>
                 <div>Last Updated: {new Date(selectedComplaint.updated_at).toLocaleString()}</div>
               </div>
+
+              <button onClick={() => { setUpdateData({ status: selectedComplaint.status, remarks: selectedComplaint.remarks || '' }); setIsModalOpen(true); }} style={{ marginTop: '20px', padding: '10px 20px', cursor: 'pointer' }}>
+                Update Status
+              </button>
             </>
           ) : (
             <div style={{ padding: '20px', textAlign: 'center', color: '#888' }}>
@@ -182,6 +207,29 @@ const ComplaintsAdmin = () => {
           )}
         </div>
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <h2>Update Complaint Status</h2>
+        <form onSubmit={handleUpdateSubmit}>
+          <div style={{ marginBottom: '15px' }}>
+            <label>Status</label>
+            <select value={updateData.status} onChange={(e) => setUpdateData({ ...updateData, status: e.target.value })} style={{ width: '100%', padding: '8px', marginTop: '5px' }}>
+              <option value="submitted">Submitted</option>
+              <option value="in progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+              <option value="dismissed">Dismissed</option>
+            </select>
+          </div>
+          <div style={{ marginBottom: '15px' }}>
+            <label>Remarks</label>
+            <textarea value={updateData.remarks} onChange={(e) => setUpdateData({ ...updateData, remarks: e.target.value })} style={{ width: '100%', padding: '8px', marginTop: '5px', minHeight: '100px' }} />
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <button type="button" onClick={() => setIsModalOpen(false)} style={{ marginRight: '10px', padding: '10px 20px' }}>Cancel</button>
+            <button type="submit" style={{ padding: '10px 20px' }}>Update</button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

@@ -20,7 +20,14 @@ const Navbar = () => {
         <Link to="/" className="nav-item">Home</Link> 
         <Link to="/bulletin" className="nav-item">Bulletin</Link>
         <Link to="/about" className="nav-item">About</Link>
-        <Link to="/dashboard" className="nav-item">Dashboard</Link>
+        {user?.role === 'admin' ? (
+          <>
+            <Link to="/admin/dashboard" className="nav-item">Complaints</Link>
+            <Link to="/admin/bulletin" className="nav-item">Bulletin</Link>
+          </>
+        ) : (
+          <Link to="/dashboard" className="nav-item">Dashboard</Link>
+        )}
         <Link to="/contact" className="nav-item">Contact</Link>
       </div>
 

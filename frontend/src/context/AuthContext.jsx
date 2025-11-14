@@ -34,6 +34,13 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (credentials) => {
+    // Clear any existing session data to prevent conflicts
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user');
+    sessionStorage.removeItem('auth_token');
+    sessionStorage.removeItem('user');
+    delete api.defaults.headers.common['Authorization'];
+
     try {
       const data = await authAPI.login(credentials);
       if (data.success) {

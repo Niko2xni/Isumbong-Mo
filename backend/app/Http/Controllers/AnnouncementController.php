@@ -35,7 +35,6 @@ class AnnouncementController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Only administrators can create announcements.',
-                'debug_user_role' => $user->role,
             ], 403);
         }
 

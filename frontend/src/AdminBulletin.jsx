@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { announcementAPI } from './services/api';
 import './AdminBulletin.css';
 
@@ -6,6 +7,7 @@ const AdminBulletin = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [newAnnouncement, setNewAnnouncement] = useState({ title: '', description: '' });
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
@@ -43,7 +45,6 @@ const AdminBulletin = () => {
         setError(response.message || 'Failed to post announcement.');
       }
     } catch (err) {
-      console.error('Error creating announcement:', err.response?.data);
       const message = err.response?.data?.message || 'An error occurred while posting the announcement.';
       setError(message);
     }
@@ -51,7 +52,12 @@ const AdminBulletin = () => {
 
   return (
     <div className="admin-bulletin-container">
-      <h1>Admin Bulletin</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1>Admin Bulletin</h1>
+        <button onClick={() => navigate('/admin/dashboard')} style={{ padding: '10px 20px', cursor: 'pointer' }}>
+          Back to Dashboard
+        </button>
+      </div>
 
       <div className="announcement-form-section">
         <h2>Post New Announcement</h2>

@@ -82,10 +82,13 @@ class ComplaintController extends Controller
     {
         $user = $request->user();
         
-        $complaint = Complaint::where('id', $id)
-            ->where('user_id', $user->id)
-            ->with('admin')
-            ->first();
+        $query = Complaint::where('id', $id)->with('admin');
+
+        if ($user->role !== 'admin') {
+            $query->where('user_id', $user->id);
+        }
+
+        $complaint = $query->first();
 
         if (!$complaint) {
             return response()->json([
@@ -200,6 +203,53 @@ class ComplaintController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Complaint deleted successfully'
+        ], 200);
+    }
+
+    /**
+     * Update the status and remarks of a complaint (admin only)
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $user = $request->user();
+
+        if ($user->role !== 'admin') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Only administrators can update complaint status.'
+            ], 403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|string|in:submitted,in progress,resolved,dismissed',
+            'remarks' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $complaint = Complaint::find($id);
+
+        if (!$complaint) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Complaint not found'
+            ], 404);
+        }
+
+        $complaint->status = $request->status;
+        $complaint->remarks = $request->remarks;
+        $complaint->admin_id = $user->id;
+        $complaint->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Complaint status updated successfully',
+            'complaint' => $complaint,
         ], 200);
     }
 }

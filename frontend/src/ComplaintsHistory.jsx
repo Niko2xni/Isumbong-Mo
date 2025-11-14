@@ -171,6 +171,18 @@ const ComplaintsHistory = () => {
                 </div>
               )}
 
+              {selectedComplaint.remarks && (
+                <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '5px' }}>
+                  <strong>Admin Remarks:</strong>
+                  <p style={{ marginTop: '10px' }}>{selectedComplaint.remarks}</p>
+                  {selectedComplaint.admin && (
+                    <p style={{ marginTop: '5px', fontSize: '12px', color: '#666' }}>
+                      - {selectedComplaint.admin.first_name} {selectedComplaint.admin.last_name}
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div style={{ marginTop: '20px', fontSize: '12px', color: '#888' }}>
                 <div>Created: {new Date(selectedComplaint.created_at).toLocaleString()}</div>
                 <div>Last Updated: {new Date(selectedComplaint.updated_at).toLocaleString()}</div>
