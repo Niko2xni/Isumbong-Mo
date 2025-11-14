@@ -43,7 +43,9 @@ const AdminBulletin = () => {
         setError(response.message || 'Failed to post announcement.');
       }
     } catch (err) {
-      setError('An error occurred while posting the announcement.');
+      console.error('Error creating announcement:', err.response?.data);
+      const message = err.response?.data?.message || 'An error occurred while posting the announcement.';
+      setError(message);
     }
   };
 

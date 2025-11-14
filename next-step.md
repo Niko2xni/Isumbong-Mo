@@ -34,4 +34,8 @@ I want you to add the necessary functionality to the admin complaint list page. 
 
 No complaint is being displayed in the admin complaint list page. I want you to fix this problem. For context, it should display all the complaints of all the users. If you're having trouble with implementing this, you can look at the logic you made in the ComplaintsHistory component for users.
 
-I want you to add the necessary functionality to the admin bulletin page. 
+I want you to add the necessary functionality to the admin bulletin page. The admin bulletin page should have section for adding new announcements and a section for viewing all announcements. The added announcements should be stored in the table for announcements in the database and displayed in the admin bulletin page.
+
+Upon loading the admin bulletin page, it shows "Failed to fetch announcements." Also, when I try to post an announcement, it shows "An error occurred while posting the announcement." I want you to fix this problem.
+
+I want you to add the necessary functionality to the user bulletin page. The user bulletin page should display all of the announcements from the admins and allow the user to view the details of each announcement. The details of a announcement should be displayed in a popup modal. I want you to follow the similar design of the admin bulletin page.
