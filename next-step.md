@@ -33,3 +33,5 @@ In the users dashboard, I want you to improve the design of the recent complaint
 I want you to add the necessary functionality to the admin complaint list page. It should display all of the complaints and allow the admin to view the details of each complaint. 
 
 No complaint is being displayed in the admin complaint list page. I want you to fix this problem. For context, it should display all the complaints of all the users. If you're having trouble with implementing this, you can look at the logic you made in the ComplaintsHistory component for users.
+
+I want you to add the necessary functionality to the admin bulletin page. 
