@@ -1,0 +1,33 @@
+# Start with an official PHP 8.2 image
+FROM php:8.2-fpm
+
+# Install system dependencies & required PHP extensions
+# We add libpq-dev for PostgreSQL (pgsql)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    git \
+    && docker-php-ext-install pdo pdo_pgsql bcmath zip
+
+# Install Composer (the PHP package manager)
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set the working directory inside the container
+WORKDIR /var/www/html
+
+# Copy composer files and install dependencies
+# This is done first to cache the vendor folder for faster builds
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader
+
+# Copy the rest of the application code
+COPY . .
+
+# Run Laravel optimizations
+RUN php artisan optimize
+
+# Expose the port. Render will use the $PORT variable.
+EXPOSE 8000
