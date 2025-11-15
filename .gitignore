@@ -1,15 +1,9 @@
-# Ignore everything in this directory
+# Ignore everything in the root
 *
 
-# BUT, do NOT ignore these folders
+# BUT, un-ignore these folders AND all their contents
 !frontend/
 !backend/
-!DockerFile
 
 # Don't ignore this .gitignore file itself
 !.gitignore
-!.dockerignore
-
-# Ignore common IDE / OS files
-.vscode
-.DS_Store
