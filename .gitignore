@@ -2,8 +2,8 @@
 *
 
 # BUT, do NOT ignore these folders
-!frontend
-!backend
+!frontend/
+!backend/
 !DockerFile
 
 # Don't ignore this .gitignore file itself
