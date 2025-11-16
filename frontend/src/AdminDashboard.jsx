@@ -20,9 +20,9 @@ const AdminDashboard = () => {
           const complaints = result.complaints;
           setStats({
             total: complaints.length,
-            inProgress: complaints.filter(c => c.status === 'In Progress').length,
-            resolved: complaints.filter(c => c.status === 'Resolved').length,
-            dismissed: complaints.filter(c => c.status === 'Dismissed').length,
+            inProgress: complaints.filter(c => c.status === 'in progress').length,
+            resolved: complaints.filter(c => c.status === 'resolved').length,
+            dismissed: complaints.filter(c => c.status === 'dismissed').length,
           });
         }
       } catch (error) {

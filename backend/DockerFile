@@ -21,12 +21,17 @@ WORKDIR /var/www/html
 # Copy composer files and install dependencies
 # This is done first to cache the vendor folder for faster builds
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader
 
-# Copy the rest of the application code
+# --- THIS IS THE FIRST FIX ---
+# Install dependencies WITHOUT running scripts (since artisan doesn't exist yet)
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+# Copy the rest of the application code (now 'artisan' exists)
 COPY . .
 
-# Run Laravel optimizations
+# --- THIS IS THE SECOND FIX ---
+# Now, run 'artisan optimize'. This caches everything AND
+# runs the 'package:discover' script that failed before.
 RUN php artisan optimize
 
 # Expose the port. Render will use the $PORT variable.

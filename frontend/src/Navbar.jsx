@@ -18,17 +18,27 @@ const Navbar = () => {
       <div className="nav-left">
         <img src={loginLg} alt="Logo" className="logo" />
         <Link to="/" className="nav-item">Home</Link> 
-        <Link to="/bulletin" className="nav-item">Bulletin</Link>
-        <Link to="/about" className="nav-item">About</Link>
-        {user?.role === 'admin' ? (
-          <>
-            <Link to="/admin/dashboard" className="nav-item">Complaints</Link>
-            <Link to="/admin/bulletin" className="nav-item">Bulletin</Link>
-          </>
+        {isAuthenticated ? (
+          user?.role === 'admin' ? (
+            <>
+              <Link to="/admin/dashboard" className="nav-item">Complaints</Link>
+              <Link to="/admin/bulletin" className="nav-item">Bulletin</Link>
+            </>
+          ) : (
+            <>
+              <Link to="/bulletin" className="nav-item">Bulletin</Link>
+              <Link to="/about" className="nav-item">About</Link>
+              <Link to="/dashboard" className="nav-item">Dashboard</Link>
+              <Link to="/contact" className="nav-item">Contact</Link>
+            </>
+          )
         ) : (
-          <Link to="/dashboard" className="nav-item">Dashboard</Link>
+          <>
+            <Link to="/bulletin" className="nav-item">Bulletin</Link>
+            <Link to="/about" className="nav-item">About</Link>
+            <Link to="/contact" className="nav-item">Contact</Link>
+          </>
         )}
-        <Link to="/contact" className="nav-item">Contact</Link>
       </div>
 
       <div className="nav-right" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -41,7 +51,7 @@ const Navbar = () => {
         
         {isAuthenticated ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Link to="/dashboard" className="nav-item" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Link to={user?.role === 'admin' ? '/admin/dashboard' : '/dashboard'} className="nav-item" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
               <FaUser />
               <span>{user?.first_name} {user?.last_name}</span>
             </Link>
