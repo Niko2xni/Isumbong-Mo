@@ -28,6 +28,13 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 # Now, copy the rest of the application code
 COPY . .
 
+# --- THIS IS THE FIX ---
+# We must manually create the cache directory and make it writable
+# because we (correctly) added it to .gitignore
+RUN mkdir -p bootstrap/cache
+RUN chmod -R 777 bootstrap/cache
+# --- END OF FIX ---
+    
 # Run 'artisan optimize'. This caches everything AND
 # safely runs 'package:discover'
 RUN php artisan optimize
