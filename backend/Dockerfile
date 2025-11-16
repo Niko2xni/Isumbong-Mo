@@ -1,5 +1,5 @@
 # Start with an official PHP 8.2 image
-FROM php:8.2-fpm
+FROM php:8.2-cli
 
 # Install system dependencies & required PHP extensions
 RUN apt-get update && apt-get install -y \
