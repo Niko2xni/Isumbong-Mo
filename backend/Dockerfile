@@ -1,4 +1,28 @@
-# ... (all the previous lines)
+# Start with an official PHP 8.2 image
+FROM php:8.2-fpm
+
+# Install system dependencies & required PHP extensions
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    git \
+    && docker-php-ext-install pdo pdo_pgsql bcmath zip
+
+# Install Composer (the PHP package manager)
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set the working directory inside the container
+WORKDIR /var/www/html
+
+# Copy composer files
+COPY composer.json composer.lock ./
+
+# Install dependencies WITHOUT running scripts
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
 # Now, copy the rest of the application code
 COPY . .
 
@@ -6,13 +30,10 @@ COPY . .
 RUN mkdir -p bootstrap/cache
 RUN chmod -R 777 bootstrap/cache
 
-# --- THIS IS THE FIX ---
-# Run the optimize commands individually and skip 'view:cache',
-# which is not needed for an API and is causing the build to fail.
+# Run the optimize commands individually and skip 'view:cache'
 RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan event:cache
-# --- END OF FIX ---
 
 # Expose the port. Render will use the $PORT variable.
 EXPOSE 8000
