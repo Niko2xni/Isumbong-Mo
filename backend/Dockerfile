@@ -37,3 +37,8 @@ RUN php artisan event:cache
 
 # Expose the port. Render will use the $PORT variable.
 EXPOSE 8000
+
+# --- THIS IS THE FIX ---
+# This command will run when the container starts.
+# We use sh -c to handle the '&&' operator correctly.
+CMD sh -c "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"
