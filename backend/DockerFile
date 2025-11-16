@@ -18,20 +18,18 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set the working directory inside the container
 WORKDIR /var/www/html
 
-# Copy composer files and install dependencies
-# This is done first to cache the vendor folder for faster builds
+# Copy composer files
 COPY composer.json composer.lock ./
 
-# --- THIS IS THE FIRST FIX ---
-# Install dependencies WITHOUT running scripts (since artisan doesn't exist yet)
+# Install dependencies WITHOUT running scripts
+# This prevents errors about 'artisan' not existing yet
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-# Copy the rest of the application code (now 'artisan' exists)
+# Now, copy the rest of the application code
 COPY . .
 
-# --- THIS IS THE SECOND FIX ---
-# Now, run 'artisan optimize'. This caches everything AND
-# runs the 'package:discover' script that failed before.
+# Run 'artisan optimize'. This caches everything AND
+# safely runs 'package:discover'
 RUN php artisan optimize
 
 # Expose the port. Render will use the $PORT variable.
