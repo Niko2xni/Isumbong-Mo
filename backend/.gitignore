@@ -33,3 +33,6 @@ Thumbs.db
 # Laravel files
 /public/storage
 /storage/*.log
+
+# Laravel cache files
+/bootstrap/cache/
