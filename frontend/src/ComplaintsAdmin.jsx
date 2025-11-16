@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from './Modal';
 import { useNavigate } from 'react-router-dom';
 import { complaintAPI } from './services/api';
-import './admin.css';
+import './Admin.css';
 import { FaSearch } from 'react-icons/fa'; // For a Font Awesome search icon
 
 const ComplaintsAdmin = () => {
