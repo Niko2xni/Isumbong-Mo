@@ -34,7 +34,11 @@ COPY . .
 RUN mkdir -p bootstrap/cache
 RUN chmod -R 777 bootstrap/cache
 # --- END OF FIX ---
-    
+
+# --- THIS IS THE FIX ---
+RUN mkdir -p resources/views
+# --- END OF FIX ---
+
 # Run 'artisan optimize'. This caches everything AND
 # safely runs 'package:discover'
 RUN php artisan optimize
