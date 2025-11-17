@@ -39,4 +39,4 @@ RUN php artisan event:cache
 EXPOSE 8000
 
 # This will WIPE and SEED the database, then start the server.
-CMD sh -c "php artisan config:clear && php artisan db:wipe --force && php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"
+CMD sh -c "php artisan config:clear && php artisan serve --host=0.0.0.0 --port=$PORT"
