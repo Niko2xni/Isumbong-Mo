@@ -9,6 +9,7 @@ use App\Http\Controllers\AnnouncementController;
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/announcements', [AnnouncementController::class, 'index']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -27,6 +28,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/complaints/{id}/status', [ComplaintController::class, 'updateStatus']);
 
     // Announcement routes
-    Route::get('/announcements', [AnnouncementController::class, 'index']);
     Route::post('/announcements', [AnnouncementController::class, 'store']);
 });
